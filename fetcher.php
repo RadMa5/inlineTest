@@ -1,9 +1,11 @@
 <?php
 
-$servername = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'inline';
+$env = parse_ini_file('.env');
+
+$servername = $env["SERVERADRESS"];
+$username = $env["USERNAME"];
+$password = $evn["PASSWORD"];
+$dbname = $env["DBNAME"];
 
 try{
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
