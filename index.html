@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search </title>
+</head>
+<body>
+    <h1>Найти запись</h1>
+    <form action="" method="get">
+        <label for="search">Введите текст для поиска:</label>
+        <input type="text" id="search" name="search" required minlength="3">
+        <button type="submit">Поиск</button>
+    </form>
+    <div id="results">
+
+    </div>
+    <script>
+        const form = document.querySelector('form');
+        const resultsDiv = document.getElementById('results');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const searchText = form.search.value;
+            let posts;
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    posts = this.responseText;
+                    posts = JSON.parse(posts);
+                    posts.forEach(element => {
+                        const div = document.createElement('div');
+                        const h1 = document.createElement('h1');
+                        const h2 = document.createElement('h2');
+                        const h3 = document.createElement('h3');
+                        h1.innerHTML = "Пост: " + element.postTitle;
+                        h2.innerHTML = "Комментатор: " +  element.commentName;
+                        h3.innerHTML = "Комментарий: " +  element.commentBody;
+                        div.appendChild(h1);
+                        div.appendChild(h2);
+                        div.appendChild(h3);
+                        div.style.margin = "10px";
+                        div.style.border = "1px solid black";
+                        resultsDiv.appendChild(div);
+                    });
+                }
+            }
+            xmlhttp.open("GET", "search.php?search=" + searchText, true);
+            xmlhttp.send();
+        });
+    </script>
+</body>
+</html>
